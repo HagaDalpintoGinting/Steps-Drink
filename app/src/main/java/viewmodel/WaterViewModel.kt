@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.stepdrink.data.local.database.AppDatabase
+import com.example.stepdrink.data.local.PreferencesManager
 import com.example.stepdrink.data.local.entity.WaterRecord
 import com.example.stepdrink.data.repository.WaterRepository
 import com.example.stepdrink.util.DateUtils
@@ -16,8 +17,10 @@ class WaterViewModel(application: Application) : AndroidViewModel(application) {
         AppDatabase.getDatabase(application).waterDao()
     )
 
-    private val _dailyGoal = MutableStateFlow(2000) // 2000ml = 2 liter
-    val dailyGoal: StateFlow<Int> = _dailyGoal.asStateFlow()
+    private val preferencesManager = PreferencesManager(application)
+
+    val dailyGoal: StateFlow<Int> = preferencesManager.waterGoal
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 2000)
 
     val todayWaterRecords: StateFlow<List<WaterRecord>> =
         repository.getWaterRecordsByDate(DateUtils.getCurrentDate())
@@ -42,13 +45,5 @@ class WaterViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             repository.deleteWaterRecord(record)
         }
-    }
-
-    fun setDailyGoal(goal: Int) {
-        _dailyGoal.value = goal
-    }
-
-    fun getProgressPercentage(): Float {
-        return (todayTotalWater.value.toFloat() / _dailyGoal.value.toFloat()).coerceIn(0f, 1f)
     }
 }

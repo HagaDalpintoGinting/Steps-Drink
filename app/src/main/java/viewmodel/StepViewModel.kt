@@ -7,6 +7,7 @@ import com.example.stepdrink.data.local.database.AppDatabase
 import com.example.stepdrink.data.local.entity.StepRecord
 import com.example.stepdrink.data.repository.StepRepository
 import com.example.stepdrink.sensor.StepCounterManager
+import com.example.stepdrink.data.local.PreferencesManager
 import com.example.stepdrink.util.DateUtils
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -18,8 +19,10 @@ class StepViewModel(application: Application) : AndroidViewModel(application) {
     )
     val stepCounterManager: StepCounterManager = StepCounterManager(application)
 
-    private val _dailyGoal = MutableStateFlow(10000)
-    val dailyGoal: StateFlow<Int> = _dailyGoal.asStateFlow()
+    private val preferencesManager = PreferencesManager(application)
+
+    val dailyGoal: StateFlow<Int> = preferencesManager.stepGoal
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 10000)
 
     val todaySteps: StateFlow<StepRecord?> = repository.getStepsByDate(DateUtils.getCurrentDate())
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
@@ -42,15 +45,6 @@ class StepViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             repository.insertOrUpdateSteps(DateUtils.getCurrentDate(), steps)
         }
-    }
-
-    fun setDailyGoal(goal: Int) {
-        _dailyGoal.value = goal
-    }
-
-    fun getProgressPercentage(): Float {
-        val today = todaySteps.value?.steps ?: 0
-        return (today.toFloat() / _dailyGoal.value.toFloat()).coerceIn(0f, 1f)
     }
 
     override fun onCleared() {

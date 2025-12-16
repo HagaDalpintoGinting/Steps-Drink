@@ -7,14 +7,17 @@ import androidx.navigation.compose.composable
 import com.example.stepdrink.ui.screen.home.HomeScreen
 import com.example.stepdrink.ui.screen.steps.StepsScreen
 import com.example.stepdrink.ui.screen.water.WaterScreen
+import com.example.stepdrink.ui.screen.profile.ProfileScreen
 import com.example.stepdrink.viewmodel.StepViewModel
 import com.example.stepdrink.viewmodel.WaterViewModel
+import com.example.stepdrink.viewmodel.ProfileViewModel
 
 @Composable
 fun NavGraph(
     navController: NavHostController,
     stepViewModel: StepViewModel,
-    waterViewModel: WaterViewModel
+    waterViewModel: WaterViewModel,
+    profileViewModel: ProfileViewModel
 ) {
     NavHost(
         navController = navController,
@@ -24,7 +27,8 @@ fun NavGraph(
             HomeScreen(
                 navController = navController,
                 stepViewModel = stepViewModel,
-                waterViewModel = waterViewModel
+                waterViewModel = waterViewModel,
+                profileViewModel = profileViewModel
             )
         }
 
@@ -41,5 +45,11 @@ fun NavGraph(
                 viewModel = waterViewModel
             )
         }
+        composable(Screen.Profile.route) {
+            ProfileScreen(
+                navController = navController,
+                viewModel = profileViewModel )
     }
+}
+
 }

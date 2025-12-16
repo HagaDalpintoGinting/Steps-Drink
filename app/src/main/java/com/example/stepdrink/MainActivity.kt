@@ -14,7 +14,7 @@ import com.example.stepdrink.ui.navigation.NavGraph
 import com.example.stepdrink.ui.theme.StepDrinkTheme
 import com.example.stepdrink.viewmodel.StepViewModel
 import com.example.stepdrink.viewmodel.WaterViewModel
-
+import com.example.stepdrink.viewmodel.ProfileViewModel
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,11 +28,13 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     val stepViewModel: StepViewModel = viewModel()
                     val waterViewModel: WaterViewModel = viewModel()
+                    val profileViewModel: ProfileViewModel = viewModel()
 
                     NavGraph(
                         navController = navController,
                         stepViewModel = stepViewModel,
-                        waterViewModel = waterViewModel
+                        waterViewModel = waterViewModel,
+                        profileViewModel = profileViewModel
                     )
                 }
             }

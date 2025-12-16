@@ -3,6 +3,7 @@ package com.example.stepdrink.ui.screen.home
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DirectionsWalk
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -14,18 +15,22 @@ import com.example.stepdrink.ui.components.StatCard
 import com.example.stepdrink.ui.navigation.Screen
 import com.example.stepdrink.viewmodel.StepViewModel
 import com.example.stepdrink.viewmodel.WaterViewModel
+import com.example.stepdrink.viewmodel.ProfileViewModel
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     navController: NavController,
     stepViewModel: StepViewModel,
-    waterViewModel: WaterViewModel
+    waterViewModel: WaterViewModel,
+    profileViewModel: ProfileViewModel
 ) {
     val todaySteps by stepViewModel.todaySteps.collectAsState()
     val stepGoal by stepViewModel.dailyGoal.collectAsState()
     val todayWater by waterViewModel.todayTotalWater.collectAsState()
     val waterGoal by waterViewModel.dailyGoal.collectAsState()
+    val userName by profileViewModel.userName.collectAsState()
 
     Scaffold(
         topBar = {
@@ -35,6 +40,11 @@ fun HomeScreen(
                         text = "Step & Drink",
                         fontWeight = FontWeight.Bold
                     )
+                    },
+                actions = {
+                    IconButton(onClick = { navController.navigate(Screen.Profile.route) }) {
+                        Icon(Icons.Default.Person, "Profil")
+                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -50,6 +60,11 @@ fun HomeScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            Text(
+                text = "Halo, $userName! 👋",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold
+            )
             Text(
                 text = "Aktivitas Hari Ini",
                 style = MaterialTheme.typography.headlineSmall,
