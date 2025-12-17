@@ -22,6 +22,9 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
     val waterGoal: StateFlow<Int> = preferencesManager.waterGoal
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 2000)
 
+    val userWeight: StateFlow<Int> = preferencesManager.userWeight
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 70)
+
     fun updateUserName(name: String) {
         viewModelScope.launch {
             preferencesManager.saveUserName(name)
@@ -39,4 +42,11 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
             preferencesManager.saveWaterGoal(goal)
         }
     }
+    fun updateUserWeight(weight: Int) {
+        viewModelScope.launch {
+            preferencesManager.saveUserWeight(weight)
+
+        }
+    }
 }
+

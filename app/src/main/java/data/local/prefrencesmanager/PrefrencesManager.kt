@@ -18,6 +18,7 @@ class PreferencesManager(private val context: Context) {
         val USER_NAME = stringPreferencesKey("user_name")
         val STEP_GOAL = intPreferencesKey("step_goal")
         val WATER_GOAL = intPreferencesKey("water_goal")
+        val USER_WEIGHT = intPreferencesKey("user_weight")
     }
 
     val userName: Flow<String> = context.dataStore.data.map { preferences ->
@@ -32,6 +33,10 @@ class PreferencesManager(private val context: Context) {
         preferences[WATER_GOAL] ?: 2000
     }
 
+    val userWeight: Flow<Int> = context.dataStore.data.map { preferences ->
+        preferences[USER_WEIGHT] ?: 70
+
+    }
     suspend fun saveUserName(name: String) {
         context.dataStore.edit { preferences ->
             preferences[USER_NAME] = name
@@ -47,6 +52,11 @@ class PreferencesManager(private val context: Context) {
     suspend fun saveWaterGoal(goal: Int) {
         context.dataStore.edit { preferences ->
             preferences[WATER_GOAL] = goal
+        }
+    }
+    suspend fun saveUserWeight(weight: Int) {
+        context.dataStore.edit { preferences ->
+            preferences[USER_WEIGHT] = weight
         }
     }
 }
