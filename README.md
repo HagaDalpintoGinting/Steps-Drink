@@ -171,11 +171,7 @@ Project ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Bergerak d
 
 
 👨‍💻 Developer
-Nama: [Nama Kamu]
-NIM: [NIM Kamu]
-Mata Kuliah: Pemrograman Bergerak
-Institusi: [Nama Universitas]
-Tahun: 2025
+Nama: Haga Dalpinto Ginting
 
 📝 Catatan
 
